@@ -24,7 +24,10 @@ public class VideoJuego2 {
         }
 
         mostrar(tablero);
+        soldadoMayorVida(soldados);
         mostrarDatosEjercito(soldados, vidaTotal);
+        rankingSoldadosBurbuja(soldados);
+        rankingSoldadosSeleccion(soldados);
     }
 
     public static boolean verificar(Soldado[][] tablero, Soldado soldado) {
@@ -44,13 +47,52 @@ public class VideoJuego2 {
         }
     }
 
-    public static void mostrarDatosEjercito(ArrayList<Soldado> soldados, int vidaTotal) {
-        double promedioVida = (double) vidaTotal / soldados.size();
-        System.out.println("Nivel de vida total del ejército: " + vidaTotal);
-        System.out.println("Promedio de nivel de vida: " + promedioVida);
-        
-        System.out.println("Datos de todos los soldados:");
+    public static void soldadoMayorVida(ArrayList<Soldado> soldados) {
+        Soldado soldadoMayor = soldados.get(0);
         for (Soldado soldado : soldados) {
+            if (soldado.getNivelVida() > soldadoMayor.getNivelVida()) {
+                soldadoMayor = soldado;
+            }
+        }
+        System.out.println("Soldado con mayor nivel de vida: " + soldadoMayor.getNombre() + 
+                           " (Vida: " + soldadoMayor.getNivelVida() + ")");
+    }
+
+    public static void rankingSoldadosBurbuja(ArrayList<Soldado> soldados) {
+        Soldado[] soldadosArray = soldados.toArray(new Soldado[0]);
+        for (int i = 0; i < soldadosArray.length - 1; i++) {
+            for (int j = 0; j < soldadosArray.length - i - 1; j++) {
+                if (soldadosArray[j].getNivelVida() < soldadosArray[j + 1].getNivelVida()) {
+                    Soldado temp = soldadosArray[j];
+                    soldadosArray[j] = soldadosArray[j + 1];
+                    soldadosArray[j + 1] = temp;
+                }
+            }
+        }
+
+        System.out.println("Ranking de poder de los soldados (Burbuja):");
+        for (Soldado soldado : soldadosArray) {
+            System.out.println(soldado.getNombre() + " - Vida: " + soldado.getNivelVida());
+        }
+    }
+
+    public static void rankingSoldadosSeleccion(ArrayList<Soldado> soldados) {
+        Soldado[] soldadosArray = soldados.toArray(new Soldado[0]);
+
+        for (int i = 0; i < soldadosArray.length - 1; i++) {
+            int maxIdx = i;
+            for (int j = i + 1; j < soldadosArray.length; j++) {
+                if (soldadosArray[j].getNivelVida() > soldadosArray[maxIdx].getNivelVida()) {
+                    maxIdx = j;
+                }
+            }
+            Soldado temp = soldadosArray[maxIdx];
+            soldadosArray[maxIdx] = soldadosArray[i];
+            soldadosArray[i] = temp;
+        }
+
+        System.out.println("Ranking de poder de los soldados (Selección):");
+        for (Soldado soldado : soldadosArray) {
             System.out.println(soldado.getNombre() + " - Vida: " + soldado.getNivelVida());
         }
     }
