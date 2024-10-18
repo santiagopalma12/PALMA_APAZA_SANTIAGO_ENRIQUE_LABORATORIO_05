@@ -22,9 +22,36 @@ public class VideoJuego2 {
             soldados.add(soldado);
             vidaTotal += vida;
         }
+
+        mostrar(tablero);
+        mostrarDatosEjercito(soldados, vidaTotal);
     }
 
     public static boolean verificar(Soldado[][] tablero, Soldado soldado) {
         return tablero[soldado.getFila()][soldado.getColumna()] != null;
+    }
+
+    public static void mostrar(Soldado[][] tablero) {
+        for (int i = 0; i < tablero.length; i++) {
+            for (int j = 0; j < tablero[i].length; j++) {
+                if (tablero[i][j] == null) {
+                    System.out.print("_________| ");
+                } else {
+                    System.out.print(tablero[i][j].getNombre() + " | ");
+                }
+            }
+            System.out.println();
+        }
+    }
+
+    public static void mostrarDatosEjercito(ArrayList<Soldado> soldados, int vidaTotal) {
+        double promedioVida = (double) vidaTotal / soldados.size();
+        System.out.println("Nivel de vida total del ejército: " + vidaTotal);
+        System.out.println("Promedio de nivel de vida: " + promedioVida);
+        
+        System.out.println("Datos de todos los soldados:");
+        for (Soldado soldado : soldados) {
+            System.out.println(soldado.getNombre() + " - Vida: " + soldado.getNivelVida());
+        }
     }
 }
